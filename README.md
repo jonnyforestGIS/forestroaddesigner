@@ -1,6 +1,6 @@
 # Forest Road Designer
 
-QGIS minimum version = 2.8
+QGIS minimum version = 3.0
 
 Funded by = __Dirección General de Tecnologías de la Información y la Comunicación - Gobierno de La Rioja (Spain)__
 
