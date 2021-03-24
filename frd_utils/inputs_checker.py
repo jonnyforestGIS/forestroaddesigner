@@ -32,7 +32,7 @@
 from __future__ import unicode_literals
 
 from osgeo import gdal
-from qgis.core import QGis, QgsGeometry, QgsPoint
+from qgis.core import Qgis, QgsGeometry, QgsPoint
                       
 import numpy as np
 import exclusion_areas_fn
@@ -77,7 +77,7 @@ def check_layers(dtm_layer, waypoints_layer, exclusion_areas_layer = None):
                        ' relance el proceso.')
             return False, message
 
-        if (waypoints_layer.wkbType() == QGis.WKBLineString
+        if (waypoints_layer.wkbType() == Qgis.WKBLineString
                and waypoints_layer.dataProvider().featureCount() <= 0):
             message = (
                    "Error: ¡No hay suficientes puntos para realizar la" +
@@ -142,7 +142,7 @@ def check_layers(dtm_layer, waypoints_layer, exclusion_areas_layer = None):
                        " y relance el proceso.")
             return False, message
         
-        elif not (exclusion_areas_layer.wkbType() == QGis.WKBPolygon): 
+        elif not (exclusion_areas_layer.wkbType() == Qgis.WKBPolygon): 
             message = ("La capa  con las zonas de exclusión debe ser de" +
                        " tipo polígono.\nPor favor, solucionelo y relance" + 
                        " el proceso.")
@@ -192,8 +192,8 @@ def check_layers(dtm_layer, waypoints_layer, exclusion_areas_layer = None):
 def check_layer_type(waypoints_layer):
     """Check that waypoint layer is LineString
     """
-    if waypoints_layer.wkbType() in (QGis.WKBLineString, 
-                                       QGis.WKBMultiLineString):
+    if waypoints_layer.wkbType() in (Qgis.WKBLineString, 
+                                       Qgis.WKBMultiLineString):
         return True
     else:
         return False

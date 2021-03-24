@@ -28,7 +28,7 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/> *
  ***************************************************************************/
 
-This module receives layers from QGis interface, extracts the raster of the
+This module receives layers from Qgis interface, extracts the raster of the
 region of interest and handles it to the numpy based optimizer code.
 After obtaining the optimal path, pixel coordinates are georeferenced back
 and stored in the given shapefile.
@@ -47,7 +47,7 @@ from qgis.gui import QgsMessageBar
 from slope_symbology import AttributeLayerSymbology
 from frd_utils import array_funs as af
 from frd_utils import exclusion_areas_fn
-import viewers
+from viewers import *
 from route_optimizer import a_star
 from route_optimizer.polysimplify import polysimplify
 
@@ -67,7 +67,7 @@ logger = logging.getLogger("frd")
 
 def showMessage(message,
                 msg_type="Info", level=QgsMessageBar.INFO, duration=3):
-    """Compatibility function to allow running on QGis and test environments.
+    """Compatibility function to allow running on Qgis and test environments.
     This function is used to show messages in qgis interface if it is
     available, using the plugin custom frd logger if not available
     (e.g. during testing)."""

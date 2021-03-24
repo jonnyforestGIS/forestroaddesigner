@@ -32,7 +32,7 @@ A-star code based on initial class from Christian Careaga
 (christian.careaga7@gmail.com)
 A* Pathfinding in Python (2.7)
 
-Modified by PANOimagen for its use on ForestRoadDesigner QGis plugin.
+Modified by PANOimagen for its use on ForestRoadDesigner Qgis plugin.
 """
 from __future__ import division
 
@@ -40,9 +40,9 @@ import logging
 
 import numpy as np
 import heapq
-import heuristics
+from route_optimizer import heuristics
 import datetime
-import penalties
+from route_optimizer import penalties
 
 logger = logging.getLogger('frd')
 

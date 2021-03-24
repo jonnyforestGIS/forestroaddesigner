@@ -35,7 +35,7 @@ from __future__ import unicode_literals
 from osgeo import gdal
 from osgeo import ogr
 from osgeo import gdalconst
-from qgis.core import QGis
+from qgis.core import Qgis
 import tempfile
 import os
 
@@ -153,9 +153,9 @@ def exclusion_areas_geoms(exclusion_areas_layer):
     features = exclusion_areas_layer.dataProvider().getFeatures()
     for feat in features:
         geom = feat.geometry()
-        if geom.wkbType() == QGis.WKBPolygon:
+        if geom.wkbType() == Qgis.WKBPolygon:
             exclusion_areas_wkb.append(geom.asWkb())
-        elif geom.wkbType() == QGis.WKBMultiPolygon:
+        elif geom.wkbType() == Qgis.WKBMultiPolygon:
             raise NotImplementedError(
             "Las capas de exclusión de tipo multipolígono " + 
             "no están soportadas.")

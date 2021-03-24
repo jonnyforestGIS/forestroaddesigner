@@ -32,8 +32,8 @@ This module manages the about information of the plugin
 """
 
 from __future__ import unicode_literals
-from PyQt4 import uic
-from PyQt4.QtGui import QDialog
+from PyQt5 import uic
+from PyQt5.QtGui import QDialog
 
 import platform
 import os

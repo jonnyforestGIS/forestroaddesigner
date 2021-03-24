@@ -31,13 +31,13 @@
 import unittest
 import numpy as np
 
-from qgis.core import QgsVectorLayer,QgsRasterLayer, QgsMapLayerRegistry
+from qgis.core import QgsVectorLayer,QgsRasterLayer, QgsProject
 
 import optimizer_qgis as oq
 
 from frd_utils import array_funs as af
 from frd_utils import inputs_checker
-import frd_utils.logging_qgis as logging
+from frd_utils import logging_qgis as logging
 import viewers
 
 logging.info("Launching test_optimizer_qgis_line.")
@@ -67,9 +67,9 @@ class OptimizerQGisCase(unittest.TestCase):
         
         self.outputfolder = 'C:\\ForestRoadDesigner\\pruebas'
         
-        QgsMapLayerRegistry.instance().addMapLayer(self.input_v_layer)
-        QgsMapLayerRegistry.instance().addMapLayer(self.input_dtm)
-        QgsMapLayerRegistry.instance().addMapLayer(self.exclusion_areas_layer)
+        QgsProject.instance().addMapLayer(self.input_v_layer)
+        QgsProject.instance().addMapLayer(self.input_dtm)
+        QgsProject.instance().addMapLayer(self.exclusion_areas_layer)
         
         
     def test_coords_and_indexes(self):
@@ -213,7 +213,7 @@ class OptimizerQGisCase(unittest.TestCase):
         """Test if exclusion utility is working
         """
         import tempfile 
-        from qgis.core import QGis
+        from qgis.core import Qgis
         outputFolder = tempfile.mkdtemp("frd") 
         
         parameters = {
@@ -237,7 +237,7 @@ class OptimizerQGisCase(unittest.TestCase):
         puntos_geom = []
         for elem in provider:
             geom2 = elem.geometry()
-            if geom2.wkbType() == QGis.WKBPoint:
+            if geom2.wkbType() == Qgis.WKBPoint:
                 puntos_geom.append(geom2)
 
         exc_provider = self.exclusion_areas_layer.dataProvider().getFeatures()
@@ -256,9 +256,9 @@ class OptimizerQGisCase(unittest.TestCase):
         self.assertEqual(contenido, [])
                 
     def tearDown(self):
-        QgsMapLayerRegistry.instance().removeMapLayer(self.input_v_layer)
-        QgsMapLayerRegistry.instance().removeMapLayer(self.input_dtm)
-        QgsMapLayerRegistry.instance().removeMapLayer(
+        QgsProject.instance().removeMapLayer(self.input_v_layer)
+        QgsProject.instance().removeMapLayer(self.input_dtm)
+        QgsProject.instance().removeMapLayer(
                 self.exclusion_areas_layer)
         
         
@@ -269,7 +269,7 @@ if __name__ == "__main__":
 
     
 
-    # from PyQt4 import QtGui
+    # from PyQt5 import QtGui
     # from qgis.core import QgsApplication
     # import os
     # import logging

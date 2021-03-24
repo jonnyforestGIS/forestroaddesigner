@@ -29,7 +29,7 @@
  ***************************************************************************/
 
 This module contains a set of auxiliary functions to allow transforming
-between QGis raster layers and numpy arrays, including functions to convert
+between Qgis raster layers and numpy arrays, including functions to convert
 to layer coordinates (_coord vars) to pixel indices (_index vars).
 """
 from __future__ import unicode_literals
@@ -42,11 +42,11 @@ import logging
 
 from osgeo import gdal, osr
 from gdal import gdalconst as gcon
-from qgis.core import (QGis, QgsGeometry, QgsPoint,
+from qgis.core import (Qgis, QgsGeometry, QgsPoint,
                        QgsVectorLayer, QgsFeature,
                        QgsVectorFileWriter)
 
-import layers_attributes
+from .layers_attributes import *
 
 logger = logging.getLogger("frd")
 
@@ -78,10 +78,10 @@ def waypoints_list(waypoints_layer):
     waypoints_coords_list = []
     for elem in provider:
         geom = elem.geometry()
-        if geom.wkbType() == QGis.WKBLineString:
+        if geom.wkbType() == Qgis.WKBLineString:
             line = geom.asPolyline()
             waypoints_coords_list = [[point.x(), point.y()] for point in line]
-        elif geom.wkbType() == QGis.WKBPoint:
+        elif geom.wkbType() == Qgis.WKBPoint:
             point = geom.asPoint()
             waypoints_coords_list.append([point.x(), point.y()])
 

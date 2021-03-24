@@ -31,7 +31,8 @@
 
 from __future__ import unicode_literals
 
-from PyQt4.QtGui import QMessageBox
+#from PyQt5.QtGui import QMessageBox
+from PyQt5.QtWidgets import QMessageBox
 from qgis.core import QgsPoint
 
 def check_point_at_dtm(dtm_layer, point):

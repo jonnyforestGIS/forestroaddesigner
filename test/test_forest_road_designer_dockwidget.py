@@ -14,11 +14,11 @@ __copyright__ = 'Copyright 2017, PANOimagen S.L.'
 
 import unittest
 
-from PyQt4.QtGui import QDockWidget
+from PyQt5.QtGui import QDockWidget
 
 from forest_road_designer_dockwidget import ForestRoadDesignerDockWidget
 
-from utilities import get_qgis_app
+from test.utilities import get_qgis_app
 
 QGIS_APP = get_qgis_app()
 

@@ -14,7 +14,7 @@ __copyright__ = 'Copyright 2017, PANOimagen S.L.'
 
 import unittest
 
-from PyQt4.QtGui import QIcon
+from PyQt5.QtGui import QIcon
 
 
 

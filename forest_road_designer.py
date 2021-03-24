@@ -31,10 +31,12 @@
 from __future__ import unicode_literals
 import os.path
 
-from PyQt4.QtCore import QSettings, QTranslator, qVersion, QCoreApplication, Qt
-from PyQt4.QtGui import QAction, QIcon
+from PyQt5.QtCore import QSettings, QTranslator, qVersion, QCoreApplication, Qt
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QAction
 
-import resources   # NOQA
+#import resources   # NOQA
+from resources import *
 
 from forest_road_designer_dockwidget import ForestRoadDesignerDockWidget
 from dlgabout import DlgAbout

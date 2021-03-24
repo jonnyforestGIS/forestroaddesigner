@@ -31,9 +31,9 @@
 
 from __future__ import unicode_literals
 
-from qgis.core import (QgsSymbolV2, QgsRendererRangeV2, 
-                       QgsGraduatedSymbolRendererV2)
-from PyQt4 import QtGui, QtCore
+from qgis.core import (QgsSymbol, QgsRendererRange, 
+                       QgsGraduatedSymbolRenderer)
+from PyQt5 import QtGui, QtCore
 import numpy as np
 
 class AttributeLayerSymbology(QtCore.QObject):
@@ -130,15 +130,15 @@ class AttributeLayerSymbology(QtCore.QObject):
             colors = self._colorValues()
             range_list = []
             for v_min, v_max, col in zip(intervs[:-1], intervs[1:], colors):                
-                symbol = QgsSymbolV2.defaultSymbol(self._layer.geometryType())
+                symbol = QgsSymbol.defaultSymbol(self._layer.geometryType())
                 symbol.setColor(col)
                 symbol.setWidth(self.LINE_WIDTH_PIX)
                 label = '{:0.2f}%->{:0.2f}%'.format(v_min, v_max)
-                range_ = QgsRendererRangeV2(v_min, v_max, symbol, label)
+                range_ = QgsRendererRange(v_min, v_max, symbol, label)
                 range_list.append(range_)
     
-            renderer = QgsGraduatedSymbolRendererV2('', range_list)
-            renderer.setMode(QgsGraduatedSymbolRendererV2.Custom)
+            renderer = QgsGraduatedSymbolRenderer('', range_list)
+            renderer.setMode(QgsGraduatedSymbolRenderer.Custom)
             renderer.setClassAttribute(self.target_field)
             self._layer.setRendererV2(renderer)
             self._layer.triggerRepaint()

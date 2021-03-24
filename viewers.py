@@ -29,7 +29,7 @@
  ***************************************************************************/
 """
 import numpy as np
-import frd_utils.logging_qgis as logging
+from frd_utils import logging_qgis as logging
 logger = logging.getLogger("frd")
 
 def remove_undef(dtm_m, dtm_no_data_value):

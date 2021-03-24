@@ -36,17 +36,18 @@ logger = logging.getLogger("frd")
 logger.setLevel(logging.DEBUG)
 
 from osgeo import gdal
-from qgis.core import (QgsApplication, QgsMapLayerRegistry, QgsMapLayer, QGis,
+from qgis.core import (QgsApplication, QgsMapLayer, Qgis,
                        QgsProject)
+
 from qgis.gui import QgsMessageBar
 from qgis.utils import iface
 
-from PyQt4 import QtGui, uic
-from PyQt4.QtCore import pyqtSignal
-from PyQt4.QtGui import QMessageBox, QProgressBar
+from PyQt5 import QtGui, uic
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QMessageBox, QProgressBar
 
-import optimizer_qgis
-import frd_utils.array_funs as af
+from optimizer_qgis import *
+from frd_utils import array_funs as af
 from frd_utils import inputs_checker
 from frd_interactive_tool import FRDInteractiveTool
 try:
@@ -107,8 +108,9 @@ class ForestRoadDesignerDockWidget(QtGui.QDockWidget, FORM_CLASS):
                 self._updateMetersLabels)
         self.batchProcessCheckBox.clicked.connect(
                 self.updateDialogBatchProcess)
-        QgsMapLayerRegistry.instance().layerWasAdded.connect(self.initLayers)
-        QgsMapLayerRegistry.instance().layersRemoved.connect(self.initLayers)
+        
+        QgsProject.instance().layerWasAdded.connect(self.initLayers)
+        QgsProject.instance().layersRemoved.connect(self.initLayers)
         self._initVersion()
         self.initLayers()
     
@@ -133,10 +135,10 @@ class ForestRoadDesignerDockWidget(QtGui.QDockWidget, FORM_CLASS):
                 version.VERSION))
 
     def _initComboBox(self, comboBox, layerType):
-        """Init the value of Dtm layer QComboBox with loaded layers in QGis
+        """Init the value of Dtm layer QComboBox with loaded layers in Qgis
         interface.
         """
-        loadedLayers = QgsMapLayerRegistry.instance().mapLayers()
+        loadedLayers = QgsProject.instance().mapLayers()
         checkType = lambda lyr, lt: lyr.type()==lt[0] and (
                 lt[1] == "all" or lyr.wkbType() in lt[1])
 
@@ -189,7 +191,7 @@ class ForestRoadDesignerDockWidget(QtGui.QDockWidget, FORM_CLASS):
         """Update the label with the pixels number according the value in
         SemiSizeDoubleSpinBox"""
         semiSizeValue = int(self.semiSizeDoubleSpinBox.value())
-        dtmLayerList = QgsMapLayerRegistry.instance().mapLayersByName(
+        dtmLayerList = QgsProject.instance().mapLayersByName(
                 self.dtmLayerComboBox.currentText())
 
         if dtmLayerList == []:
@@ -252,7 +254,7 @@ class ForestRoadDesignerDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.initExclusionAreasLayer()
 
     def initDtmLayer(self):
-        """Init the value of Dtm layer QComboBox with loaded layers in QGis
+        """Init the value of Dtm layer QComboBox with loaded layers in Qgis
         interface."""
         try:
             self._initComboBox(self.dtmLayerComboBox,
@@ -262,24 +264,24 @@ class ForestRoadDesignerDockWidget(QtGui.QDockWidget, FORM_CLASS):
 
     def initWaypointLayer(self):
         """Init the value of Waypoint layers in QComboBox with loaded
-        layers in QGis interface."""
+        layers in Qgis interface."""
         try:
             self._initComboBox(
                     self.waypointsLayerComboBox,
-                    (QgsMapLayer.VectorLayer, [QGis.WKBLineString,
-                                               QGis.WKBMultiLineString]))
+                    (QgsMapLayer.VectorLayer, [Qgis.WKBLineString,
+                                               Qgis.WKBMultiLineString]))
         except AttributeError:
             pass
 
     def initExclusionAreasLayer(self):
         """Init the value of Waypoint layers in QComboBox with loaded layers
-        in QGis interface."""
+        in Qgis interface."""
         if self.exclusionAreasCheckBox.isChecked():
             self.exclusionAreasComboBox.setEnabled(True)
             self.exclusionAreasTextLabel.setEnabled(True)
             try:
                 self._initComboBox(self.exclusionAreasComboBox,
-                               (QgsMapLayer.VectorLayer, [QGis.WKBPolygon]))
+                               (QgsMapLayer.VectorLayer, [Qgis.WKBPolygon]))
             except AttributeError:
                 pass
         else:
@@ -310,14 +312,14 @@ class ForestRoadDesignerDockWidget(QtGui.QDockWidget, FORM_CLASS):
 
             Output is set
         """
-        dtmLayerList = QgsMapLayerRegistry.instance().mapLayersByName(
+        dtmLayerList = QgsProject.instance().mapLayersByName(
                 self.dtmLayerComboBox.currentText())
         if not dtmLayerList:
             self.showMessageBox(u"Error: ¡No se ha seleccionado un DTM!\n" +
                                 u"Por favor seleccione uno.")
             return False
         if not interactive_mode:
-            waypointsLayerList = QgsMapLayerRegistry.instance(
+            waypointsLayerList = QgsProject.instance(
                     ).mapLayersByName(
                             self.waypointsLayerComboBox.currentText())
             if not waypointsLayerList:
@@ -327,7 +329,7 @@ class ForestRoadDesignerDockWidget(QtGui.QDockWidget, FORM_CLASS):
                 return False
 
         if self.exclusionAreasCheckBox.isChecked():
-            exclusionAreasLayerList = QgsMapLayerRegistry.instance(
+            exclusionAreasLayerList = QgsProject.instance(
                     ).mapLayersByName(
                 self.exclusionAreasComboBox.currentText())
             if not exclusionAreasLayerList \
@@ -367,13 +369,13 @@ class ForestRoadDesignerDockWidget(QtGui.QDockWidget, FORM_CLASS):
         if not self.checkParameters(interactive_mode=interactive_mode):
             return False
 
-        dtmLayer = QgsMapLayerRegistry.instance().mapLayersByName(
+        dtmLayer = QgsProject.instance().mapLayersByName(
                 self.dtmLayerComboBox.currentText())[0]
 
         if self.exclusionAreasCheckBox.isChecked():
             try:
                 exclusionAreasLayer = \
-                    QgsMapLayerRegistry.instance().mapLayersByName(
+                    QgsProject.instance().mapLayersByName(
                         self.exclusionAreasComboBox.currentText())[0]
             except (ValueError, IndexError):
                 exclusionAreasLayer = None
@@ -413,7 +415,7 @@ class ForestRoadDesignerDockWidget(QtGui.QDockWidget, FORM_CLASS):
         progress.setMaximum(100)
         progressMessageBar.pushWidget(progress)
 
-        waypointsLayer = QgsMapLayerRegistry.instance().mapLayersByName(
+        waypointsLayer = QgsProject.instance().mapLayersByName(
                     self.waypointsLayerComboBox.currentText())[0]
 
         try:
@@ -458,7 +460,7 @@ class ForestRoadDesignerDockWidget(QtGui.QDockWidget, FORM_CLASS):
         self.raw_layer = self.finder.create_raw_output_layer()
 
         self.root = QgsProject.instance().layerTreeRoot()
-        QgsMapLayerRegistry.instance().addMapLayers([self.raw_layer], False)
+        QgsProject.instance().addMapLayers([self.raw_layer], False)
         for layer in [self.raw_layer]:
             self.root.insertLayer(0, layer)
 
@@ -467,7 +469,7 @@ class ForestRoadDesignerDockWidget(QtGui.QDockWidget, FORM_CLASS):
     def remove_empty_raw_layer(self):
         """Removes the empity raw layer when process is not completed
         """
-        QgsMapLayerRegistry.instance().removeMapLayer(self.raw_layer)
+        QgsProject.instance().removeMapLayer(self.raw_layer)
         
     def importSimplifiedRouteOptimization(self):
         """This function imports the simplified layer and loads it in the top
@@ -481,7 +483,7 @@ class ForestRoadDesignerDockWidget(QtGui.QDockWidget, FORM_CLASS):
                             u"Info", QgsMessageBar.INFO, 20)
         
         self.output_layer = simplified_layer
-        QgsMapLayerRegistry.instance().addMapLayers([simplified_layer], False)
+        QgsProject.instance().addMapLayers([simplified_layer], False)
         for layer in [simplified_layer]:
             self.root.insertLayer(0, layer)
         self.setCanvasExtent(simplified_layer)

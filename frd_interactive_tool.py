@@ -29,8 +29,9 @@
  ***************************************************************************/
 """
 
-from PyQt4.QtCore import Qt, pyqtSignal
-from PyQt4.QtGui import QCursor, QPixmap, QMessageBox  
+from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtGui import QCursor, QPixmap
+from PyQt5.QtWidgets import QMessageBox
 from qgis.gui import QgsMapTool
 
 class FRDInteractiveTool(QgsMapTool):

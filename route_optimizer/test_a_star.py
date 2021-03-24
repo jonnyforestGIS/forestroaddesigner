@@ -31,8 +31,8 @@
 import unittest
 import numpy as np
 
-import a_star
-from polysimplify import polysimplify
+from route_optimizer import a_star
+from route_optimizer.polysimplify import polysimplify
 import penalties
 import heuristics
 

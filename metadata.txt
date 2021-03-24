@@ -8,7 +8,7 @@
 
 [general]
 name=Forest Road Designer
-qgisMinimumVersion=2.14
+qgisMinimumVersion=3.0
 description=This plugin serve as support of foresters in the design of forest roads
 version=1.1.18
 author=Dirección General de Tecnologías de la Información y la Comunicación - Gobierno de La Rioja (Spain)

@@ -105,7 +105,7 @@ if __name__ == "__main__":
     from test.utilities import get_qgis_app
     QGIS_APP, CANVAS, IFACE, PARENT = get_qgis_app()
 
-    # from PyQt4 import QtGui
+    # from PyQt5 import QtGui
     # from qgis.core import QgsApplication
     # import os
     # import logging

@@ -28,10 +28,10 @@
  *   along with this program.  If not, see <https://www.gnu.org/licenses/> *
  ***************************************************************************/
 """
-from PyQt4.QtCore import QVariant
+from PyQt5.QtCore import QVariant
 from qgis.core import QgsField
 import numpy as np
-import logging_qgis as logging
+from frd_utils import logging_qgis as logging
 logger = logging.getLogger("frd")
 
 def field_names(layer):

@@ -33,7 +33,7 @@ from __future__ import unicode_literals
 from __future__ import division
 from scipy.ndimage import zoom
 from math import sqrt
-from distance_transform import constrained_distance_transform
+from route_optimizer.distance_transform import constrained_distance_transform
 
 import logging
 
